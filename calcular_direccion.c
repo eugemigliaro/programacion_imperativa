@@ -5,7 +5,7 @@
 #define COLS 6
  
 #define ERROR (-1)
-enum direcciones {N = 0, NE, E, SE, S, SO, O, NO};
+enum direcciones {N = 0, NE, E, SE, S, SO, O, NO}; // man fuck that shit im out of ideas
  
 int calculaDireccion(char mat[][COLS], int alto, int ancho, int x, int y){
     int res = ERROR;
