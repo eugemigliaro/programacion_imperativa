@@ -43,6 +43,20 @@ main(void) {
     return 0;
 }
 
-int obtenerAprobados(char *arrNombres[], int tam, char *aprobados[], int notas[]){}
+int obtenerAprobados(char *arrNombres[], int tam, char *aprobados[], const int notas[]){
+    int ntam = 0;
+    for(int i = 0; i < tam; i++){
+        if(notas[i] >= NOTA_APROBADO){
+            aprobados[ntam++] = arrNombres[i];
+        }
+    }
 
-static void mostrarNombres(char *arrNombres[], size_t n){}
+    return ntam;
+}
+
+static void mostrarNombres(char *arrNombres[], size_t n){
+    for(int i = 0; i < n; i++){
+        printf("%s ", arrNombres[i]);
+    }
+    printf("\n");
+}
