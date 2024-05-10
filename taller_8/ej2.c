@@ -34,16 +34,24 @@ main(void) {
 
 int igualesRet(const int a[], const int b[]) {
     if (a[0] == b[0]){
-        return 1;
+        if(a[0] == -1){
+            return 1;
+        }
+
+        return igualesRet(a + 1, b + 1);
     }
     return 0;
 }
 
 void igualesVoid(const int a[], const int b[], int * rta) {
+    *rta = 0;
     if (a[0] == b[0]){
-        *rta = 1;
-    }
-    else{
-        *rta = 0;
+        if(a[0] == -1){
+            *rta = 1;
+        }
+        else{
+            igualesVoid(a + 1, b + 1, rta);
+        }
+        return;
     }
 }
