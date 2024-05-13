@@ -40,13 +40,13 @@ void recMinMax(const int v[], int dim, int * min, int * max){
 
         return;
     }
-    else if(v[dim - 1] <= 0){
+    if(v[dim - 1] <= 0){
         *min = -1;
         *max = -1;
 
         return;
     }
-    else if(dim == 1){
+    if(dim == 1){
         *min = v[0];
         *max = v[0];
 
