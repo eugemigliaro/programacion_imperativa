@@ -9,7 +9,7 @@ retornar el puntero al primer nodo de la lista resultante. No definir funciones 
 auxiliares.
 La segunda lista no debe ser modificada. */
  
-TList concatenarLista(TList, TList);
+TList concatenarLista(TList, const TList);
  
 int
 main(void) {
@@ -35,7 +35,7 @@ main(void) {
     return 0;
 }
 
-TList concatenarLista(TList l1, TList l2) {
+TList concatenarLista(TList l1, const TList l2) {
     if(l2 == NULL){
         return l1;
     }
