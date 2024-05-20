@@ -25,12 +25,12 @@ int main(void) {
 
     TList l1 = fromArray(v, 6);
     TList l2 = fromArray(w, 9);
-/*     TList l3 = listUnion(l1, l2);
+    TList l3 = listUnion(l1, l2);
     assert(checkElems(l3, w, 9));
     printf("Prueba 1 OK!\n");
-    freeList(l3); */
+    freeList(l3);
 
-    TList l3 = listUnion(l2, l1);
+    l3 = listUnion(l2, l1);
     assert(checkElems(l3, w, 9));
     for(TList aux = l3; aux != NULL; aux = aux->tail) {
         printf("%d ", aux->elem);
@@ -40,14 +40,17 @@ int main(void) {
 
     l3 = listUnion(l2, l2);
     assert(checkElems(l3, w, 9));
+    printf("Prueba 3 OK!\n");
     freeList(l3);
 
     l3 = listUnion(l2, NULL);
     assert(checkElems(l3, w, 9));
+    printf("Prueba 4 OK!\n");
     freeList(l3);
 
     l3 = listUnion(NULL, l2);
     assert(checkElems(l3, w, 9));
+    printf("Prueba 5 OK!\n");
     freeList(l3);
     freeList(l1);
     freeList(l2);
@@ -58,6 +61,7 @@ int main(void) {
     freeList(l1);
     freeList(l2);
     assert(checkElems(l3, w, 9));
+    printf("Prueba 6 OK!\n");
     freeList(l3);
 
 
@@ -81,7 +85,7 @@ TList listUnion (const TList list1, const TList list2){
         result->elem = list1->elem;
         result->tail = listUnion(list1->tail, list2);
     }
-    else if (list1 == NULL || list1->elem > list2->elem) {
+    else if ((list1 == NULL) || (list2 != NULL && list1->elem > list2->elem)) {
         printf("  list1 is NULL or list1->elem (>) list2->elem, returning elem = %d and listUnion(list1, list2->tail)\n", list2->elem);
         result->elem = list2->elem;
         result->tail = listUnion(list1, list2->tail);
