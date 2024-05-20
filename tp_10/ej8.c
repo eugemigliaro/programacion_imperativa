@@ -95,6 +95,7 @@ TList listUnion (const TList list1, const TList list2){
     result->elem = list1->elem;
     result->tail = listUnion(list1->tail, list2->tail);
     }
+
     return result;
 }
 
