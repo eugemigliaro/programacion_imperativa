@@ -56,7 +56,7 @@ TList depuraLista(TList l, fn f) {
         l->tail = depuraLista(l->tail, f);
     } else {
         TList aux = l;
-        aux = depuraLista(l->tail, f);
+        aux = depuraLista(aux->tail, f);
         free(l);
         return aux;
     }

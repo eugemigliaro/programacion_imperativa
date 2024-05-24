@@ -30,11 +30,6 @@ int main(void) {
 
     TListBrief aux = bf;
 
-    while(aux != NULL) {
-        printf("element: %d count: %d\n", aux->elem);
-        aux = aux->tail;
-    }
-
     assert(aux->elem ==1 && aux->count == 2);
 
     aux = aux->tail;
@@ -55,8 +50,6 @@ int main(void) {
     aux = aux->tail;
     assert(aux == NULL);
 
-    printf("Pruebas OK!\n");
-
     freeList(list);
     freeListBrief(bf);
 
@@ -65,20 +58,20 @@ int main(void) {
 }
 
 TListBrief comprimeList(const TList list) {
-    if (list == NULL)
+    if (list == NULL){
         return NULL;
-
-    TListBrief lb = malloc(sizeof(TNodeBrief));
-    lb->elem = list->elem;
-    lb->count = 1;
-
-    TListBrief aux = comprimeList(list->tail);
-    if (aux != NULL && aux->elem == lb->elem) {
-        lb->count += aux->count;
-        free(aux);
-        aux = comprimeList(list->tail);
     }
 
-    lb->tail = aux;
+    TListBrief lb = comprimeList(list->tail);
+
+    if (lb == NULL || lb->elem > list->elem){
+        TListBrief aux = malloc(sizeof(TNodeBrief));
+        aux->elem = list->elem;
+        aux->count = 1;
+        aux->tail = lb;
+        return aux;
+    }
+
+    (lb->count)++;
     return lb;
 }
