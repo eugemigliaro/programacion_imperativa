@@ -69,8 +69,7 @@ elemType next(queueADT q){
     return ans;
 }
 
-int
-main(void) {
+int main(void) {
     queueADT q = newQueue();
     queue(q, 5);
     queue(q, 9);
