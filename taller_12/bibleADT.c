@@ -51,7 +51,10 @@ int addVerse(bibleADT bible, size_t bookNbr, size_t verseNbr, const char * verse
     }
     if(verseNbr > bible->books[bookNbr-1].numVerses){
         bible->books[bookNbr-1].verses = realloc(bible->books[bookNbr-1].verses, (verseNbr) * sizeof(TVerse));
-        
+        for(int i = bible->books[bookNbr-1].numVerses; i < verseNbr; i++){
+            bible->books[bookNbr-1].verses[i].verse = NULL;
+            bible->books[bookNbr-1].verses[i].len = 0;
+        }
     }
     else if(bible->books[bookNbr-1].verses[verseNbr - 1].verse){
         return 0;
