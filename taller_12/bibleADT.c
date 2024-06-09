@@ -51,6 +51,7 @@ int addVerse(bibleADT bible, size_t bookNbr, size_t verseNbr, const char * verse
     }
     if(verseNbr > bible->books[bookNbr-1].numVerses){
         bible->books[bookNbr-1].verses = realloc(bible->books[bookNbr-1].verses, (verseNbr) * sizeof(TVerse));
+        
     }
     else if(bible->books[bookNbr-1].verses[verseNbr - 1].verse){
         return 0;
@@ -71,14 +72,20 @@ char * getVerse(bibleADT bible, size_t bookNbr, size_t verseNbr){
 }
 
 void freeBible(bibleADT bible){
-    for(size_t i = 0; i < BOOKS; i++){
-        for(size_t j = 0; j < bible->books[i].numVerses; j++){
-            if(bible->books[i].verses[j].verse != NULL){
-                free(bible->books[i].verses[j].verse);
+    size_t i, j;
+
+    for(i = 0; i < BOOKS; i++){
+        if(bible->books[i].verses){
+            for(j = 0; j < bible->books[i].numVerses; j++){
+                printf("%d %d\n", i, j);
+                if(bible->books[i].verses[j].verse){
+                    printf("freeing\n");
+                    free(bible->books[i].verses[j].verse);
+                }
             }
-        }
-        if(bible->books[i].verses != NULL){
-            free(bible->books[i].verses);
+            if(bible->books[i].verses){
+                free(bible->books[i].verses);
+            }
         }
     }
     free(bible);
