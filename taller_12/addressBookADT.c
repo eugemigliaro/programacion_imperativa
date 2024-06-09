@@ -6,20 +6,25 @@
 
 #define BLOCK 100
 
+typedef struct contNode{
+    tContact *contact;
+    struct contNode *next;
+}tContNode;
+
 typedef struct tGroup{
     char *name;
     char *cleanName;
     size_t lenName;
-    tContact *contacts;
-    size_t numContacts;
-    size_t actual;
+    tContNode *firstCont, *currentCont;
 }tGroup;
 
+typedef struct groupNode{
+    tGroup *group;
+    struct groupNode *next;
+}tGroupNode;
+
 typedef struct addressBookCDT{
-    tGroup *groups;
-    size_t numGroups;
-    size_t numContacts;
-    size_t actual;
+    tGroupNode *firstGroup, *currentGroup;
 }addressBookCDT;
 
 addressBookADT newAddressBook(){
@@ -58,14 +63,26 @@ static char *strtoptr(const char *s, size_t *len){
     return ans;
 }
 
-static tGroup * findGroup(addressBookADT ab, const char *groupName){
-    char *aux = strtolwr(groupName, strlen(groupName));
-
-    tGroup *found = NULL;
+static tContNode *findContact(tGroup *group, const char *contactName){
+    char *aux = strtolwr(contactName, strlen(contactName));
+    tContNode *found = NULL;
     
-    for(size_t i = 0; i < ab->numGroups && !found; i++){
-        if(strcmp(aux, ab->groups[i].cleanName) == 0){
-            found = &(ab->groups[i]);
+    for(tContNode *i = group->firstCont; i && !found; i = i->next){
+        if(strcmp(aux, strtolwr(i->contact->name, strlen(i->contact->name))) == 0){
+            found = i;
+        }
+    }
+
+    return found;
+}
+
+static tGroupNode *findGroup(addressBookADT ab, const char *groupName){
+    char *aux = strtolwr(groupName, strlen(groupName));
+    tGroupNode *found = NULL;
+    
+    for(tGroupNode *i = ab->firstGroup; i && !found; i = i->next){
+        if(strcmp(aux, i->group->cleanName) == 0){
+            found = i;
         }
     }
 
@@ -73,64 +90,18 @@ static tGroup * findGroup(addressBookADT ab, const char *groupName){
 }
 
 int addGroup(addressBookADT ab, const char *groupName){
-    if(ab->groups && findGroup(ab, groupName)){
+    if(ab->firstGroup && findGroup(ab, groupName)){
         return 0;
     }
 
-    ab->groups = realloc(ab->groups, (ab->numGroups + 1) * sizeof(tGroup));
+    tGroup *new = calloc(1, sizeof(tGroup));
 
-    tGroup *new = &(ab->groups[ab->numGroups]);
-
-    new->name = strtoptr(groupName, &(ab->groups[ab->numGroups].lenName));
-    new->cleanName = strtolwr(ab->groups[ab->numGroups].name, ab->groups[ab->numGroups].lenName);
-    new->contacts = NULL;
-    new->numContacts = 0;
-    new->actual = 0;
-
-    ab->numGroups++;
-
-    return 1;
-}
-
-static tContact * findContact(tGroup *group, const char *name){
-
-    char *aux = strtolwr(name, strlen(name));
-
-    tContact *found = NULL;
-
-    for(size_t i = 0; i < group->numContacts && !found; i++){
-        if(strcmp(strtolwr(group->contacts[i].name, strlen(group->contacts[i].name)), aux) == 0){
-            found = &(group->contacts[i]);
-        }
-    }
-
-    return found;
-}
-
-int addContact(addressBookADT ab, const char *groupName, tContact contact){
-
-    tGroup *group = NULL;
-
-    if(!(ab->groups) || !(group = findGroup(ab, groupName))){
-        return 0;
-    }
-
-    if(group->contacts && findContact(group, contact.name)){
-        return 0;
-    }
-
-    group->contacts = realloc(group->contacts, (group->numContacts + 1) * sizeof(tContact));
-
-    tContact *new = &(group->contacts[group->numContacts]);
-
-    new->name = strtoptr(contact.name, NULL);
-    new->phoneNumber = strtoptr(contact.phoneNumber, NULL);
+    new->name = strtoptr(groupName, &(new->lenName));
+    new->cleanName = strtolwr(new->name, new->lenName);
     
-    group->numContacts++;
+    tGroupNode *newNode = calloc(1, sizeof(tGroupNode));
 
-    return 1;
-}
+    newNode->group = new;
 
-void toBeginForGroup(addressBookADT ab, const char *groupName){
-    
+    for(tGroupNode *i = ab->firstGroup; i && i->next &&(strcmp(i->next->group->cleanName, new->cleanName) < 0); i = i->next){
 }
