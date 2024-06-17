@@ -57,3 +57,19 @@ TList sortedList(TList list){
     list->tail = max;
     return list;
 }
+
+TList sortedListBeginning(TList list){
+    if(list == NULL){
+        return NULL;
+    }
+    if(list->tail != NULL && list->elem >= list->tail->elem){
+        TList aux = list->tail->tail;
+        free(list->tail);
+        list->tail = aux;
+        list->tail = sortedListBeginning(list);
+        return list;
+    }
+
+    list->tail = sortedListBeginning(list->tail);
+    return list;
+}
